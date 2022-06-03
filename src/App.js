@@ -31,6 +31,7 @@ const App = () => {
 
   const addNewPerson = e => {
     e.preventDefault();
+
     const newPerson = {
       name: newName,
       number: newNumber
@@ -40,9 +41,13 @@ const App = () => {
       return;
     }
 
-    setPersons(persons.concat(newPerson));
-    setNewName('');
-    setNewNumber('');
+    axios
+      .post('http://localhost:3001/persons', newPerson)
+      .then(response => {
+        setFilteredPersons(filteredPersons.concat(response.data));
+        setNewName('');
+        setNewNumber('');
+      });
   }
 
   const existingName = () => {
