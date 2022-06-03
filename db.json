@@ -1,11 +1,6 @@
 {
   "persons": [
     {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
-      "id": 4
-    },
-    {
       "name": "Jake Burton",
       "number": "864-704-6471",
       "id": 5
@@ -19,21 +14,6 @@
       "name": "Scott Burton",
       "number": "864-884-3141",
       "id": 8
-    },
-    {
-      "name": "Mom",
-      "number": "aljds",
-      "id": 9
-    },
-    {
-      "name": "Testing",
-      "number": "1234",
-      "id": 10
-    },
-    {
-      "name": "Jake",
-      "number": "8645552642",
-      "id": 13
     }
   ]
 }

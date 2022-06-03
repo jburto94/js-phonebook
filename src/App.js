@@ -38,28 +38,41 @@ const App = () => {
     const newPerson = {
       name: newName,
       number: newNumber
-    }
-
-    if (existingName()) {
-      return;
-    }
+    };
 
     personService
       .create(newPerson)
       .then(returnedPerson => {
-        setFilteredPersons(filteredPersons.concat(returnedPerson));
+        showNewList();
         setNewName('');
         setNewNumber('');
       });
-  }
+  };
 
   const existingName = () => {
-    if (persons.find(person => person.name === newName)) {
-      alert(`${newName} is already added to the phonebook`);
-      return true;
+    return persons.find(person => person.name === newName);
+  };
+
+  const editNumber = (e) => {
+    e.preventDefault();
+
+    const person = persons.find(p => p.name === newName);
+
+    const updatedPerson = {
+      name: newName,
+      number: newNumber
+    };
+
+    if (window.confirm(`${person.name} is already added to the phonebook, replace the old number with the new one?`)) {
+      personService
+        .update(person.id, updatedPerson)
+        .catch(error => {
+          alert(`The person ${person.name} has already been deleted from the server`);
+        });
+
+      showNewList();
     }
-    return false;
-  }
+  };
 
   const handleFilter = (e) => {
     if (e.target.value) {
@@ -68,7 +81,7 @@ const App = () => {
     } else {
       setFilteredPersons(persons);
     }
-  }
+  };
 
   const removePerson = id => {
     const person = persons.find(person => person.id === id);
@@ -81,13 +94,18 @@ const App = () => {
     }
   }
 
+  const handleSubmit = (e) => {
+    existingName()
+      ? editNumber(e) : addNewPerson(e);
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
       <Filter handleChange={handleFilter} />
       <h2>Add new contact</h2>
       <PersonForm
-        handleSubmit={addNewPerson}
+        handleSubmit={handleSubmit}
         handleNewName={handleNewName}
         handleNewNumber={handleNewNumber}
         newName={newName}
