@@ -12,13 +12,17 @@ const App = () => {
   const [filteredPersons, setFilteredPersons] = useState(persons);
 
   useEffect(() => {
+    showNewList();
+  }, []);
+
+  const showNewList = () => {
     personService
       .getAll()
       .then(initialPersons => {
         setPersons(initialPersons);
         setFilteredPersons(initialPersons);
-      })
-  }, []);
+      });
+  }
 
   const handleNewName = e => {
     setNewName(e.target.value);
@@ -66,6 +70,17 @@ const App = () => {
     }
   }
 
+  const removePerson = id => {
+    const person = persons.find(person => person.id === id);
+
+    if (window.confirm(`Do you want to delete ${person.name}?`)) {
+      personService
+        .deletePerson(id);
+
+      showNewList();
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -79,7 +94,7 @@ const App = () => {
         newNumber={newNumber}
       />
       <h2>Numbers</h2>
-      <Persons persons={filteredPersons} />
+      <Persons persons={filteredPersons} handleDelete={removePerson} />
     </div>
   );
 };
